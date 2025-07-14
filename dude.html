@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>LINE Profile</title>
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    img {
+      border-radius: 50%;
+      margin-top: 10px;
+    }
+    #profile {
+      display: none;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h2>โปรไฟล์จาก LINE</h2>
+  <div id="profile">
+    <img id="pictureUrl" width="100" />
+    <p><strong>ชื่อ:</strong> <span id="displayName"></span></p>
+    <p><strong>User ID:</strong> <span id="userId"></span></p>
+  </div>
+
+  <script>
+    async function main() {
+      await liff.init({ liffId: "2007711340-AeDL9yX7" });
+
+      if (!liff.isLoggedIn()) {
+        liff.login();
+        return;
+      }
+
+      const profile = await liff.getProfile();
+
+      document.getElementById("pictureUrl").src = profile.pictureUrl;
+      document.getElementById("displayName").textContent = profile.displayName;
+      document.getElementById("userId").textContent = profile.userId;
+      document.getElementById("profile").style.display = 'block';
+    }
+
+    main();
+  </script>
+</body>
+</html>
