@@ -30,7 +30,7 @@
 
   <script>
     async function main() {
-      await liff.init({ liffId: "2007711340-AeDL9yX7" });
+      await liff.init({ liffId: "2007746626-0K8lYxmn" });
 
       if (!liff.isLoggedIn()) {
         liff.login();
@@ -43,6 +43,34 @@
       document.getElementById("displayName").textContent = profile.displayName;
       document.getElementById("userId").textContent = profile.userId;
       document.getElementById("profile").style.display = 'block';
+
+      // **ส่วนเพิ่มใหม่สำหรับการส่งข้อมูลไป Google Sheet**
+      const WEB_APP_URL = 'https://satida1997.github.io/hotel/'; // **เปลี่ยนตรงนี้เป็น URL ของ Web App ของคุณ**
+
+      try {
+        const response = await fetch(WEB_APP_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            pictureUrl: profile.pictureUrl,
+            displayName: profile.displayName,
+            userId: profile.userId
+          }),
+        });
+
+        const result = await response.json();
+        if (result.status === 'success') {
+          console.log('ข้อมูลถูกส่งไปยัง Google Sheet เรียบร้อยแล้ว');
+          // คุณสามารถเพิ่มการแจ้งเตือนผู้ใช้ได้ที่นี่
+        } else {
+          console.error('เกิดข้อผิดพลาดในการส่งข้อมูล:', result.message);
+        }
+      } catch (error) {
+        console.error('เกิดข้อผิดพลาดในการเชื่อมต่อ:', error);
+      }
+      // **สิ้นสุดส่วนเพิ่มใหม่**
     }
 
     main();
